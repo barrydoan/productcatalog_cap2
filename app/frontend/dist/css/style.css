@@ -1,0 +1,31 @@
+/* Enter your custom styles here */
+.product-name {
+    color: #3C289B !important;
+    font-weight: bold !important;
+}
+
+.pricing-title-box {
+    justify-content: flex-end !important;
+}
+
+.hiden-field {
+    visibility: hidden;
+}
+
+.toolbar {
+    justify-content: flex-end !important;
+}
+
+.quantity {
+    padding: 0 5px;
+    width: 10px;
+}
+
+#cai-webclient-builtin-button {
+    height: fit-content;
+    bottom: 50px !important;
+}
+
+#cai-webclient-main {
+    bottom: 50px !important;
+}

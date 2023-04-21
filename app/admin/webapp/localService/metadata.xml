@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="AdminService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Products" EntityType="AdminService.Products">
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="supplier" Target="Suppliers"/>
+                    <NavigationPropertyBinding Path="category" Target="Categories"/>
+                </EntitySet>
+                <EntitySet Name="Suppliers" EntityType="AdminService.Suppliers">
+                    <NavigationPropertyBinding Path="products" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Categories" EntityType="AdminService.Categories">
+                    <NavigationPropertyBinding Path="products" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Orders" EntityType="AdminService.Orders">
+                    <NavigationPropertyBinding Path="Items" Target="OrderItems"/>
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                </EntitySet>
+                <EntitySet Name="Carts" EntityType="AdminService.Carts">
+                    <NavigationPropertyBinding Path="Items" Target="CartItems"/>
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                </EntitySet>
+                <EntitySet Name="CartItems" EntityType="AdminService.CartItems">
+                    <NavigationPropertyBinding Path="parent" Target="Carts"/>
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Currencies" EntityType="AdminService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="OrderItems" EntityType="AdminService.OrderItems">
+                    <NavigationPropertyBinding Path="parent" Target="Orders"/>
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="AdminService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="Products">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="shortId" Type="Edm.String" MaxLength="8"/>
+                <Property Name="NDC" Type="Edm.String" MaxLength="20"/>
+                <Property Name="UPC" Type="Edm.String" MaxLength="20"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="stock" Type="Edm.Int32"/>
+                <Property Name="acqCost" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="retailPrice" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="awp" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="rebate" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="perDose" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="unitSize" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="form" Type="Edm.String" MaxLength="10"/>
+                <Property Name="caseQuantity" Type="Edm.Int32"/>
+                <Property Name="imageUrl" Type="Edm.String"/>
+                <Property Name="data" Type="Edm.Stream"/>
+                <NavigationProperty Name="currency" Type="AdminService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+                <NavigationProperty Name="supplier" Type="AdminService.Suppliers" Partner="products">
+                    <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="supplier_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="category" Type="AdminService.Categories" Partner="products">
+                    <ReferentialConstraint Property="category_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="category_ID" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Suppliers">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="status" Type="Edm.String" MaxLength="10"/>
+                <NavigationProperty Name="products" Type="Collection(AdminService.Products)" Partner="supplier"/>
+            </EntityType>
+            <EntityType Name="Categories">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <NavigationProperty Name="products" Type="Collection(AdminService.Products)" Partner="category"/>
+            </EntityType>
+            <EntityType Name="Orders">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="OrderNo" Type="Edm.String"/>
+                <NavigationProperty Name="Items" Type="Collection(AdminService.OrderItems)" Partner="parent">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="total" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <NavigationProperty Name="currency" Type="AdminService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+            </EntityType>
+            <EntityType Name="Carts">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="CardNo" Type="Edm.String"/>
+                <NavigationProperty Name="Items" Type="Collection(AdminService.CartItems)" Partner="parent">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="total" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <NavigationProperty Name="currency" Type="AdminService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+            </EntityType>
+            <EntityType Name="CartItems">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="parent" Type="AdminService.Carts" Partner="Items">
+                    <ReferentialConstraint Property="parent_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="parent_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="product" Type="AdminService.Products">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Int32"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <Property Name="netAmount" Type="Edm.Decimal" Scale="2" Precision="9"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <NavigationProperty Name="texts" Type="Collection(AdminService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="AdminService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="OrderItems">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="parent" Type="AdminService.Orders" Partner="Items">
+                    <ReferentialConstraint Property="parent_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="parent_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="product" Type="AdminService.Products">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Int32"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <Property Name="netAmount" Type="Edm.Decimal" Scale="2" Precision="9"/>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Annotations Target="AdminService.Products/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="AdminService.Products/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="AdminService.Products/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="AdminService.Products/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="AdminService.Products/data">
+                                        <Annotation Term="Core.MediaType" String="application/binary"/>
+                                    </Annotations>
+                                    <Annotations Target="AdminService.Products/currency">
+                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                            </Annotations>
+                                            <Annotations Target="AdminService.Products/currency_code">
+                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                    <Annotation Term="Common.ValueList">
+                                                        <Record Type="Common.ValueListType">
+                                                            <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                <PropertyValue Property="Parameters">
+                                                                    <Collection>
+                                                                        <Record Type="Common.ValueListParameterInOut">
+                                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                            <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                        </Record>
+                                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                            <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                        </Record>
+                                                                    </Collection>
+                                                                </PropertyValue>
+                                                            </Record>
+                                                        </Annotation>
+                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="AdminService.Suppliers/createdAt">
+                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="AdminService.Suppliers/createdBy">
+                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="AdminService.Suppliers/modifiedAt">
+                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="AdminService.Suppliers/modifiedBy">
+                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="AdminService.Categories/createdAt">
+                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="AdminService.Categories/createdBy">
+                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="AdminService.Categories/modifiedAt">
+                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="AdminService.Categories/modifiedBy">
+                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="AdminService.Orders/createdAt">
+                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="AdminService.Orders/createdBy">
+                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="AdminService.Orders/modifiedAt">
+                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="AdminService.Orders/modifiedBy">
+                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="AdminService.Orders/OrderNo">
+                                                                                                                                    <Annotation Term="Common.Label" String="Order Number"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="AdminService.Orders/total">
+                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="AdminService.Orders/currency">
+                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="AdminService.Orders/currency_code">
+                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                                                <Annotation Term="Common.ValueList">
+                                                                                                                                                    <Record Type="Common.ValueListType">
+                                                                                                                                                        <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                                                                                            <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                                                                                            <PropertyValue Property="Parameters">
+                                                                                                                                                                <Collection>
+                                                                                                                                                                    <Record Type="Common.ValueListParameterInOut">
+                                                                                                                                                                        <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                                                                    </Record>
+                                                                                                                                                                    <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                                                                    </Record>
+                                                                                                                                                                </Collection>
+                                                                                                                                                            </PropertyValue>
+                                                                                                                                                        </Record>
+                                                                                                                                                    </Annotation>
+                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="AdminService.Carts/createdAt">
+                                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                                                                        </Annotations>
+                                                                                                                                                        <Annotations Target="AdminService.Carts/createdBy">
+                                                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                                <Annotations Target="AdminService.Carts/modifiedAt">
+                                                                                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                                                                    </Annotations>
+                                                                                                                                                                    <Annotations Target="AdminService.Carts/modifiedBy">
+                                                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                                                            </Annotations>
+                                                                                                                                                                            <Annotations Target="AdminService.Carts/CardNo">
+                                                                                                                                                                                <Annotation Term="Common.Label" String="Cart Number"/>
+                                                                                                                                                                            </Annotations>
+                                                                                                                                                                            <Annotations Target="AdminService.Carts/total">
+                                                                                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                                            </Annotations>
+                                                                                                                                                                            <Annotations Target="AdminService.Carts/currency">
+                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="AdminService.Carts/currency_code">
+                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                                                                                            <Annotation Term="Common.ValueList">
+                                                                                                                                                                                                <Record Type="Common.ValueListType">
+                                                                                                                                                                                                    <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                                                                                                                                        <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                                                                                                                                        <PropertyValue Property="Parameters">
+                                                                                                                                                                                                            <Collection>
+                                                                                                                                                                                                                <Record Type="Common.ValueListParameterInOut">
+                                                                                                                                                                                                                    <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                                                                                                                                                                    <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                                                                                                                </Record>
+                                                                                                                                                                                                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                                                                                                                    <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                                                                                                                </Record>
+                                                                                                                                                                                                            </Collection>
+                                                                                                                                                                                                        </PropertyValue>
+                                                                                                                                                                                                    </Record>
+                                                                                                                                                                                                </Annotation>
+                                                                                                                                                                                                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                <Annotations Target="AdminService.Currencies">
+                                                                                                                                                                                                    <Annotation Term="UI.Identification">
+                                                                                                                                                                                                        <Collection>
+                                                                                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                                                                                <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                                                                                            </Record>
+                                                                                                                                                                                                        </Collection>
+                                                                                                                                                                                                    </Annotation>
+                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                <Annotations Target="AdminService.Currencies/name">
+                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                    <Annotations Target="AdminService.Currencies/descr">
+                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                        <Annotations Target="AdminService.Currencies/code">
+                                                                                                                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                            <Annotations Target="AdminService.Currencies/symbol">
+                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                <Annotations Target="AdminService.Currencies_texts/locale">
+                                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                                    <Annotations Target="AdminService.Currencies_texts/name">
+                                                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                                                        <Annotations Target="AdminService.Currencies_texts/descr">
+                                                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                                                            <Annotations Target="AdminService.Currencies_texts/code">
+                                                                                                                                                                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                                            </Schema>
+                                                                                                                                                                                                                        </edmx:DataServices>
+                                                                                                                                                                                                                    </edmx:Edmx>

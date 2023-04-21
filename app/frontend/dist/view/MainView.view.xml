@@ -1,0 +1,170 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.core"
+	xmlns="sap.m" 
+	xmlns:tnt="sap.tnt" 
+    xmlns:semantic="sap.f.semantic"
+	controllerName="frontend.controller.MainView" 
+	displayBlock="true">
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false"
+        showFooter="true">
+
+        <semantic:titleHeading>
+            <Title text="Product List" />
+        </semantic:titleHeading>
+
+        <semantic:titleBreadcrumbs>
+			<Breadcrumbs>
+				<Link href="#/" text="Home" />
+                <Link href="#/" text="Product List" />
+			</Breadcrumbs>
+		</semantic:titleBreadcrumbs>
+
+        <!-- Custom Title Icon Content-->
+        <semantic:titleCustomIconActions>
+            <MenuButton icon="sap-icon://cart" text="{baseModel>/cartInfo/cardNo}">
+                <menu>
+                    <Menu>
+                        <MenuItem text="Select cart" icon="sap-icon://cart-approval" press=".onCartClicked"/>
+                        <MenuItem text="Edit" icon="sap-icon://edit" press=".onEditClicked" />
+                        <MenuItem text="Manage" icon="sap-icon://action-settings" press="onManageClicked" />
+                    </Menu>
+                </menu>
+            </MenuButton>
+        </semantic:titleCustomIconActions>
+
+        <semantic:content>
+            <Table noDataText="No data" id="table" 
+                items="{      
+                    path: '/Products',     
+                    sorter: {       
+                        path: 'name'      
+                    }
+                    }"
+                growing="true"
+                growingScrollToLoad="true">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title id="tableHeader"
+                            text="Products" />
+                        <ToolbarSpacer />
+                        <ComboBox id="oComboBoxCategory"
+                            selectionChange="onCategoryChange"
+                            showClearIcon="true"
+                            items="{
+                                path: '/Categories',
+                                sorter: { path: 'name' }
+                            }">
+                            <core:Item key="{name}"
+                                text="{name}" />
+                        </ComboBox>
+                        <ComboBox id="oComboBoxSupplier"
+                            selectionChange="onSupplierChange"
+                            showClearIcon="true"
+                            items="{
+                                path: '/Suppliers',
+                                sorter: { path: 'name' }
+                            }">
+                            <core:Item key="{name}"
+                                text="{name}" />
+                        </ComboBox>
+                        <Button tooltip="Sort"
+                            icon="sap-icon://sort"
+                            press="handleSortButtonPressed" />
+                        <SearchField id="searchField"
+                            tooltip="Search"
+                            search=".onSearch"
+                            width="auto">
+                        </SearchField>
+                    </Toolbar>
+                </headerToolbar>
+                <items>
+                    <ColumnListItem type="Active" id="item0" press=".showProductDetail">
+                        <cells>  
+                            <HBox alignItems="Center" justifyContent="SpaceBetween">
+                                <Image src="img/{imageUrl}" width="100px" height="100px"  class="sapUiSmallMargin"/>
+                                <VBox width="100%" height="100px" direction="Column" alignItems="Stretch">
+                                    <Text class="product-name" text="{name}" />
+                                    <Text text="{NDC} | {shortId}" />
+                                    <tnt:InfoLabel id="il3" text="{stock}" renderMode="Narrow" colorScheme="7"/>
+                                    <Text text="{supplierName}"/>
+                                </VBox>
+                            </HBox>
+                            <VBox height="100px">
+                                <Text text="{form}"/>
+                            </VBox>
+                            <VBox height="100px">
+                                <Text text="{unitSize}"/>
+                            </VBox>
+                            <VBox justifyContent="SpaceBetween">
+                                <HBox height="50px" justifyContent="End">
+                                    <Text width="8em" text="${perDose}"/>
+                                    <Text width="8em" text="${rebate}"/>
+                                    <Text width="8em" text="${awp}"/>
+                                    <Text width="8em" text="${retailPrice}"/>
+                                    <Text width="8em" text="${acqCost}"/>
+                                </HBox>
+                                <HBox height="50px" justifyContent="End">
+                                    <Input
+                                        class="hiden-field"
+                                        name="productId"
+                                        type="Number"
+                                        value="{ID}"
+                                     />
+                                    <Input
+                                        name="productQuantity"
+                                        class="quantity"
+                                        type="Number"
+                                        placeholder="Enter a number"
+                                        value="1"
+                                        
+                                    />
+                                    <Button text="Add to Cart" press=".onAddToCart" />
+                                </HBox>
+                            </VBox>
+                            
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column width="26em">
+                        <header>
+                            <Label text="Description"/>
+                        </header>
+                    </Column>
+                    <Column width="8em">
+                        <header>
+                            <Label text="Form"/>
+                        </header>
+                    </Column>
+                    <Column  width="8em">
+                        <header>
+                            <Label text="UnitSize"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <HBox width="100%" class="pricing-title-box">
+                                    <Label width="8em" text="Per Dose"/>
+                                    <Label width="8em" text="Rebate"/>
+                                    <Label width="8em" text="AWP"/>
+                                    <Label width="8em" text="Retail Price"/>
+                                    <Label width="8em" text="Acq. Cost"/>
+                            </HBox>
+                        </header>
+                    </Column >
+                </columns>
+            </Table>
+        </semantic:content>
+
+		<!-- Custom Footer Content-->
+		<semantic:footerCustomActions >
+		    <Button text="Open Bot" type="Attention" press="onPressOpenBot" />
+            <Button text="Close Bot" type="Attention" press="onPressCloseBot" />
+            <Button text="Toggle Bot" type="Emphasized" press="onPressToggleBot" />
+		</semantic:footerCustomActions>
+    </semantic:SemanticPage>
+</mvc:View>

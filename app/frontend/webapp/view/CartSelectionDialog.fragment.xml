@@ -1,0 +1,56 @@
+<core:FragmentDefinition 
+    xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:u="sap.ui.unified"
+    xmlns:plugins="sap.ui.table.plugins"
+	xmlns:core="sap.ui.core">
+	<Dialog id="cartSelectionDialog" title="Cart Selection">
+
+		<content>
+			<Table noDataText="No data" id="cartSelectionTable" 
+                items="{      
+                    path: '/Carts',     
+                    sorter: {       
+                        path: 'CardNo'      
+                    }
+                    }"
+                growing="true"
+                growingScrollToLoad="true"
+                includeItemInSelection="true"
+                mode="SingleSelectLeft"
+                selectionChange=".onCartItemClicked">
+                
+                <items >
+                    <ColumnListItem type="Active" id="item0" >
+                        <cells>  
+                            <Text text="{CardNo}"/>
+                            <u:Currency
+						        value="{total}" 
+                                currency="USD" maxPrecision="2" useSymbol="false"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column>
+                        <header>
+                            <Label text="CartNo"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Total"/>
+                        </header>
+                    </Column>
+                </columns>
+            </Table>
+		</content>
+		
+		<beginButton>
+			<Button type="Emphasized" text="Ok" press=".onDialogOkClicked"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press=".onDialogCancelClicked"/>		
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

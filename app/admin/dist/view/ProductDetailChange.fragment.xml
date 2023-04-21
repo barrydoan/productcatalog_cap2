@@ -1,0 +1,154 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified">
+	<VBox class="sapUiSmallMargin">
+		<f:Form id="FromChange"
+			editable="false">
+			<f:title>
+				<core:Title text="Product information" />
+			</f:title>
+			<f:layout>
+				<f:ResponsiveGridLayout
+					labelSpanXL="4"
+					labelSpanL="4"
+					labelSpanM="12"
+					labelSpanS="12"
+					adjustLabelSpan="false"
+					emptySpanXL="0"
+					emptySpanL="0"
+					emptySpanM="0"
+					emptySpanS="0"
+					columnsXL="2"
+					columnsL="2"
+					columnsM="1"
+					singleContainerFullSize="false" />
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer title="Product">
+					<f:formElements>
+						<f:FormElement label="ID">
+							<f:fields>
+								<Input value="{ path: 'ID', targetType: 'any'}"  />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Short ID">
+							<f:fields>
+								<Input value="{shortId}" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="NDC">
+							<f:fields>
+								<Input value="{NDC}" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="UPC">
+							<f:fields>
+								<Input value="{UPC}"/>
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="Name">
+							<f:fields>
+								<Input value="{name}"/>
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="Stock">
+							<f:fields>
+								<Input value="{stock}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Form">
+							<f:fields>
+								<Input value="{form}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Image url">
+							<f:fields>
+								<Input value="{imageUrl}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Case quantity">
+							<f:fields>
+								<Input value="{caseQuantity}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Image">
+							<f:fields>
+								<Image id="productImage" width="100px" height="100px" src="{data}" />
+								<u:FileUploader id="fileUploaderFS" multiple="false" change="onFileChange" />
+ 								<Button id="fileUploadButton" text="Upload" type="Accept" press=".onUploadFile"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer title="Pricing">
+					<f:formElements>
+						<f:FormElement label="Acquire cost">
+							<f:fields>
+								<Input value="{acqCost}" />
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Retail price">
+							<f:fields>
+								<Input value="{retailPrice}" />
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="AWP">
+							<f:fields>
+								<Input value="{awp}" />
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="Per dose">
+							<f:fields>
+								<Input value="{perDose}" />
+							</f:fields>
+						</f:FormElement>
+                        <f:FormElement label="Rebate">
+							<f:fields>
+								<Input value="{rebate}" />
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<f:Form id="FormChangeMore" editable="true">
+            <f:title>
+                <core:Title text="More" />
+            </f:title>
+            <f:layout>
+                <f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                <f:FormContainer title="Relation data">
+                    <f:formElements>
+                        <f:FormElement label="Category">
+                            <f:fields>
+                                <Select selectedKey="{category_ID}" 
+									items="{
+										path: '/Categories',
+										sorter: { path: 'name' }
+									}">
+                                    <core:Item key="{ID}" text="{name}" />
+                                </Select>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Supplier">
+                            <f:fields>
+                                <Select selectedKey="{supplier_ID}" 
+									items="{
+										path: '/Suppliers',
+										sorter: { path: 'name' }
+									}">
+                                    <core:Item key="{ID}" text="{name}" />
+                                </Select>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+            </f:formContainers>
+        </f:Form>
+	</VBox>
+</core:FragmentDefinition>

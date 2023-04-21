@@ -1,0 +1,64 @@
+<mvc:View
+	controllerName="admin.controller.CartList"
+	xmlns="sap.ui.table"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:c="sap.ui.core"
+	xmlns:m="sap.m"
+	height="100%">
+	<m:Page
+		showHeader="true"
+		enableScrolling="false"
+		class="sapUiContentPadding">
+		<m:customHeader>
+           <m:Bar>
+                <m:contentLeft>
+                     <m:Button id="buttonMenu" icon="sap-icon://menu" tooltip="Menu" press="onMenuPress"  />
+                </m:contentLeft>
+           </m:Bar>
+      	</m:customHeader>
+		<m:content>
+			<Table
+				id="table"
+				rows="{/Carts}"
+				selectionMode="Single"
+				visibleRowCountMode="Auto"
+				rowSelectionChange="selectionChangeHandler"
+				ariaLabelledBy="title">
+				<extension>
+					<m:OverflowToolbar style="Clear">
+						<m:Title id="title" text="Cart"/>
+						<m:ToolbarSpacer/>
+						<m:Button id="new" text="New" press="handleNewPress" />
+						<m:Select id="select" items="{modes>/items}" selectedKey="Navigation" change="onBehaviourModeChange">
+							<c:Item key="{modes>key}" text="{modes>text}"/>
+						</m:Select>
+						<m:ToggleButton text="Toggle Navigated Indicators" pressed="false" press="onNavIndicatorsToggle"/>
+					</m:OverflowToolbar>
+				</extension>
+				<columns>
+					<Column>
+						<m:Label text="Cart ID" />
+						<template>
+							<m:Text text="{ID}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Cart No" />
+						<template>
+							<m:Text text="{CardNo}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Total" />
+						<template>
+							<m:Text text="{total}" wrapping="false"/>
+						</template>
+					</Column>
+				</columns>
+			</Table>
+		</m:content>
+	</m:Page>
+</mvc:View>
+
+

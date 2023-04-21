@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CartService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Categories" EntityType="CartService.Categories">
+                    <NavigationPropertyBinding Path="products" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Suppliers" EntityType="CartService.Suppliers">
+                    <NavigationPropertyBinding Path="products" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Carts" EntityType="CartService.Carts">
+                    <NavigationPropertyBinding Path="Items" Target="CartItems"/>
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                </EntitySet>
+                <EntitySet Name="Products" EntityType="CartService.Products">
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="supplier" Target="Suppliers"/>
+                    <NavigationPropertyBinding Path="category" Target="Categories"/>
+                </EntitySet>
+                <EntitySet Name="CartItems" EntityType="CartService.CartItems">
+                    <NavigationPropertyBinding Path="parent" Target="Carts"/>
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Currencies" EntityType="CartService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="CartService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="Categories">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <NavigationProperty Name="products" Type="Collection(CartService.Products)" Partner="category"/>
+            </EntityType>
+            <EntityType Name="Suppliers">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="status" Type="Edm.String" MaxLength="10"/>
+                <NavigationProperty Name="products" Type="Collection(CartService.Products)" Partner="supplier"/>
+            </EntityType>
+            <EntityType Name="Carts">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="CardNo" Type="Edm.String"/>
+                <NavigationProperty Name="Items" Type="Collection(CartService.CartItems)" Partner="parent">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="total" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <NavigationProperty Name="currency" Type="CartService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+            </EntityType>
+            <EntityType Name="Products">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="shortId" Type="Edm.String" MaxLength="8"/>
+                <Property Name="NDC" Type="Edm.String" MaxLength="20"/>
+                <Property Name="UPC" Type="Edm.String" MaxLength="20"/>
+                <Property Name="name" Type="Edm.String" MaxLength="111"/>
+                <Property Name="stock" Type="Edm.Int32"/>
+                <Property Name="acqCost" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="retailPrice" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="awp" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="rebate" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="perDose" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="unitSize" Type="Edm.Decimal" Scale="2" Precision="9"/>
+                <Property Name="form" Type="Edm.String" MaxLength="10"/>
+                <Property Name="caseQuantity" Type="Edm.Int32"/>
+                <Property Name="imageUrl" Type="Edm.String"/>
+                <Property Name="data" Type="Edm.Stream"/>
+                <NavigationProperty Name="currency" Type="CartService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+                <NavigationProperty Name="supplier" Type="CartService.Suppliers" Partner="products">
+                    <ReferentialConstraint Property="supplier_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="supplier_ID" Type="Edm.Int32"/>
+                <NavigationProperty Name="category" Type="CartService.Categories" Partner="products">
+                    <ReferentialConstraint Property="category_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="category_ID" Type="Edm.Int32"/>
+                <Property Name="categoryName" Type="Edm.String" MaxLength="111"/>
+                <Property Name="supplierName" Type="Edm.String" MaxLength="111"/>
+            </EntityType>
+            <EntityType Name="CartItems">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="parent" Type="CartService.Carts" Partner="Items">
+                    <ReferentialConstraint Property="parent_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="parent_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="product" Type="CartService.Products">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Int32"/>
+                <Property Name="amount" Type="Edm.Int32"/>
+                <Property Name="netAmount" Type="Edm.Decimal" Scale="2" Precision="9"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <NavigationProperty Name="texts" Type="Collection(CartService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="CartService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Annotations Target="CartService.EntityContainer/Categories">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="CartService.Categories/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="CartService.Categories/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="CartService.Categories/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="CartService.Categories/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="CartService.EntityContainer/Suppliers">
+                                        <Annotation Term="Capabilities.DeleteRestrictions">
+                                            <Record Type="Capabilities.DeleteRestrictionsType">
+                                                <PropertyValue Property="Deletable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.InsertRestrictions">
+                                            <Record Type="Capabilities.InsertRestrictionsType">
+                                                <PropertyValue Property="Insertable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Capabilities.UpdateRestrictions">
+                                            <Record Type="Capabilities.UpdateRestrictionsType">
+                                                <PropertyValue Property="Updatable" Bool="false"/>
+                                            </Record>
+                                        </Annotation>
+                                    </Annotations>
+                                    <Annotations Target="CartService.Suppliers/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="CartService.Suppliers/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="CartService.Suppliers/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="CartService.Suppliers/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="CartService.Carts/createdAt">
+                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="CartService.Carts/createdBy">
+                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="CartService.Carts/modifiedAt">
+                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="CartService.Carts/modifiedBy">
+                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CartService.Carts/CardNo">
+                                                                                        <Annotation Term="Common.Label" String="Cart Number"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CartService.Carts/total">
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="CartService.Carts/currency">
+                                                                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="CartService.Carts/currency_code">
+                                                                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                    <Annotation Term="Common.ValueList">
+                                                                                                        <Record Type="Common.ValueListType">
+                                                                                                            <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                                                <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                                                <PropertyValue Property="Parameters">
+                                                                                                                    <Collection>
+                                                                                                                        <Record Type="Common.ValueListParameterInOut">
+                                                                                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                                                                            <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                        </Record>
+                                                                                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                            <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                        </Record>
+                                                                                                                    </Collection>
+                                                                                                                </PropertyValue>
+                                                                                                            </Record>
+                                                                                                        </Annotation>
+                                                                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="CartService.EntityContainer/Products">
+                                                                                                            <Annotation Term="Capabilities.DeleteRestrictions">
+                                                                                                                <Record Type="Capabilities.DeleteRestrictionsType">
+                                                                                                                    <PropertyValue Property="Deletable" Bool="false"/>
+                                                                                                                </Record>
+                                                                                                            </Annotation>
+                                                                                                            <Annotation Term="Capabilities.InsertRestrictions">
+                                                                                                                <Record Type="Capabilities.InsertRestrictionsType">
+                                                                                                                    <PropertyValue Property="Insertable" Bool="false"/>
+                                                                                                                </Record>
+                                                                                                            </Annotation>
+                                                                                                            <Annotation Term="Capabilities.UpdateRestrictions">
+                                                                                                                <Record Type="Capabilities.UpdateRestrictionsType">
+                                                                                                                    <PropertyValue Property="Updatable" Bool="false"/>
+                                                                                                                </Record>
+                                                                                                            </Annotation>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="CartService.Products/createdAt">
+                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="CartService.Products/modifiedAt">
+                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                </Annotations>
+                                                                                                                <Annotations Target="CartService.Products/data">
+                                                                                                                    <Annotation Term="Core.MediaType" String="application/binary"/>
+                                                                                                                </Annotations>
+                                                                                                                <Annotations Target="CartService.Products/currency">
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="CartService.Products/currency_code">
+                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                                                                                <Annotation Term="Common.ValueList">
+                                                                                                                                    <Record Type="Common.ValueListType">
+                                                                                                                                        <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                                                                            <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                                                                            <PropertyValue Property="Parameters">
+                                                                                                                                                <Collection>
+                                                                                                                                                    <Record Type="Common.ValueListParameterInOut">
+                                                                                                                                                        <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                                                                    </Record>
+                                                                                                                                                    <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                                                                        <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                                                                    </Record>
+                                                                                                                                                </Collection>
+                                                                                                                                            </PropertyValue>
+                                                                                                                                        </Record>
+                                                                                                                                    </Annotation>
+                                                                                                                                    <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="CartService.Currencies">
+                                                                                                                                        <Annotation Term="UI.Identification">
+                                                                                                                                            <Collection>
+                                                                                                                                                <Record Type="UI.DataField">
+                                                                                                                                                    <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                                </Record>
+                                                                                                                                            </Collection>
+                                                                                                                                        </Annotation>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="CartService.Currencies/name">
+                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="CartService.Currencies/descr">
+                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                            </Annotations>
+                                                                                                                                            <Annotations Target="CartService.Currencies/code">
+                                                                                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="CartService.Currencies/symbol">
+                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="CartService.Currencies_texts/locale">
+                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                        </Annotations>
+                                                                                                                                                        <Annotations Target="CartService.Currencies_texts/name">
+                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                            </Annotations>
+                                                                                                                                                            <Annotations Target="CartService.Currencies_texts/descr">
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                                <Annotations Target="CartService.Currencies_texts/code">
+                                                                                                                                                                    <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                    </Annotations>
+                                                                                                                                                                </Schema>
+                                                                                                                                                            </edmx:DataServices>
+                                                                                                                                                        </edmx:Edmx>

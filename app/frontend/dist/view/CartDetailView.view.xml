@@ -1,0 +1,140 @@
+<mvc:View xmlns:form="sap.ui.layout.form" 
+	xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.core"
+	xmlns="sap.m" 
+    xmlns:layout="sap.ui.layout"
+	xmlns:tnt="sap.tnt" 
+    xmlns:semantic="sap.f.semantic"
+    xmlns:m="sap.m"
+    xmlns:u="sap.ui.unified"
+    xmlns:c="sap.ui.core"
+	controllerName="frontend.controller.CartDetailView" 
+	displayBlock="true">
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title text="Cart List" />
+        </semantic:titleHeading>
+
+        <semantic:titleBreadcrumbs>
+			<Breadcrumbs>
+				<Link href="#/" text="Home" />
+                <Link href="#/carts" text="Cart List" />
+                <Link href="#/cartdetail" text="Cart Detail" />
+			</Breadcrumbs>
+		</semantic:titleBreadcrumbs>
+
+        <!-- Custom Title Icon Content-->
+        <semantic:titleCustomIconActions>
+            <MenuButton icon="sap-icon://cart" text="{baseModel>/cartInfo/cardNo}">
+                <menu>
+                    <Menu>
+                        <MenuItem text="Select cart" icon="sap-icon://cart-approval" press=".onCartClicked"/>
+                        <MenuItem text="Edit" icon="sap-icon://edit" press=".onEditClicked" />
+                        <MenuItem text="Manage" icon="sap-icon://action-settings" press="onManageClicked" />
+                    </Menu>
+                </menu>
+            </MenuButton>
+        </semantic:titleCustomIconActions><semantic:headerContent>
+			<layout:HorizontalLayout>
+                <form:SimpleForm 
+                    id="simpleform"
+                    layout="ResponsiveGridLayout" 
+                    editable="true" >
+                    <Label displayOnly="true" text="CartId" />
+                    <Input editable="false" name="cartId" type="Text" value="{cartDetailModel>/ID}" />
+                    <Label displayOnly="true" text="Cart No" />
+                    <HBox >
+                        <Input type="Text" name="cartNo" value="{cartDetailModel>/CardNo}" />
+                        <Button icon="sap-icon://accept" type="Transparent" press=".onEditCartNoClicked"/>
+                    </HBox>
+                    <Label displayOnly="true" text="Total" />
+                    <u:Currency value="{cartDetailModel>/total}" currency="USD" useSymbol="false"/>
+                </form:SimpleForm>
+			</layout:HorizontalLayout>
+		</semantic:headerContent>
+
+
+
+        <semantic:content>
+            <Table noDataText="No data" id="table" 
+                items="{ path: 'cartItemsModel>/value' }"
+                growing="true"
+                growingScrollToLoad="true">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title id="tableHeader"
+                            text="Products" />
+                        <ToolbarSpacer />
+                        
+                    </Toolbar>
+                </headerToolbar>
+                <items >
+                    <ColumnListItem type="Active" id="item0" press=".showCartDetail">
+                        <cells>  
+                            <HBox >
+                                <Image src="img/{cartItemsModel>product/imageUrl}" width="50px" height="50px" />
+                                <VBox>
+                                    <Text text="{cartItemsModel>product/name}"/>
+                                    <Text text="{cartItemsModel>product/shortId}"/>
+                                    <Text text="{cartItemsModel>product/NDC}"/>
+                                </VBox>
+                            </HBox>
+                            <u:Currency
+						        value="{cartItemsModel>netAmount}" 
+                                currency="USD" maxPrecision="2" useSymbol="false"/>
+                            <HBox>
+                                <Input
+                                        class="hiden-field"
+                                        name="productId"
+                                        value="{cartItemsModel>product_ID}"
+                                     />
+                                <Input
+                                        class="hiden-field"
+                                        name="parentId"
+                                        value="{cartItemsModel>parent_ID}"
+                                     />
+                                <Input type="Number" name="quantity" value="{cartItemsModel>amount}"/>
+                                <Button width="1em" icon="sap-icon://accept" type="Transparent" press=".onEditClicked"/>
+                            </HBox>
+                            <HBox name="action" justifyContent="End">
+                                <Input
+                                        class="hiden-field"
+                                        name="cartItemId"
+                                        value="{cartItemsModel>ID}"
+                                     />
+                                <Button icon="sap-icon://delete" type="Transparent" press=".onDeleteClicked"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column>
+                        <header>
+                            <Label text="Description"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Price"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Quantity"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Action"/>
+                        </header>
+                    </Column>
+
+                </columns>
+            </Table>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

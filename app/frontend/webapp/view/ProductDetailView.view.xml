@@ -1,0 +1,143 @@
+<mvc:View xmlns:form="sap.ui.layout.form" 
+	xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.core"
+	xmlns="sap.m" 
+    xmlns:layout="sap.ui.layout"
+	xmlns:tnt="sap.tnt" 
+    xmlns:semantic="sap.f.semantic"
+    xmlns:m="sap.m"
+    xmlns:u="sap.ui.unified"
+    xmlns:c="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+	controllerName="frontend.controller.ProductDetailView" 
+	displayBlock="true">
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title text="Product detail" />
+        </semantic:titleHeading>
+
+        <semantic:titleBreadcrumbs>
+			<Breadcrumbs>
+				<Link href="#/" text="Home" />
+                <Link href="#/productdetail" text="Product List" />
+			</Breadcrumbs>
+		</semantic:titleBreadcrumbs>
+
+        <!-- Custom Title Icon Content-->
+        <semantic:titleCustomIconActions>
+            <MenuButton icon="sap-icon://cart" text="{baseModel>/cartInfo/cardNo}">
+                <menu>
+                    <Menu>
+                        <MenuItem text="Select cart" icon="sap-icon://cart-approval" press=".onCartClicked"/>
+                        <MenuItem text="Edit" icon="sap-icon://edit" press=".onEditClicked" />
+                        <MenuItem text="Manage" icon="sap-icon://action-settings" press="onManageClicked" />
+                    </Menu>
+                </menu>
+            </MenuButton>
+        </semantic:titleCustomIconActions><semantic:headerContent>
+			
+		</semantic:headerContent>
+
+
+
+        <semantic:content>
+        <VBox>
+            <HBox>
+                <Image src="img/{productDetailModel>/imageUrl}"  width="300px" height="300px"  class="sapUiSmallMargin"/>
+                <f:SimpleForm id="form1"
+                    editable="false"
+                    layout="ResponsiveGridLayout">
+                    <f:content>
+                        <Label text="Name" />
+                        <Text text="{productDetailModel>/name}" />
+                        <Label text="Category" />
+                        <Text text="{productDetailModel>/categoryName}" />
+                        <Label text="Supplier" />
+                        <Text text="{productDetailModel>/supplierName}" />
+                        <Label text="Short Id" />
+                        <Text text="{productDetailModel>/shortId}" />
+                        <Label text="NDC" />
+                        <Text text="{productDetailModel>/NDC}" />
+                        <Label text="UPC" />
+                        <Text text="{productDetailModel>/UPC}" />
+                    </f:content>
+                </f:SimpleForm>
+                <f:SimpleForm id="form2"
+                    editable="false"
+                    layout="ResponsiveGridLayout">
+                    <f:content>
+                        <Label text="Form" />
+                        <Text text="{productDetailModel>/form}" />
+                        <Label text="stock" />
+                        <Text text="{productDetailModel>/stock}" />
+                        <Label text="Unit Size" />
+                        <Text text="{productDetailModel>/unitSize}" />
+                        <Label text="Per dose" />
+                        <ObjectNumber
+                            inverted="true"
+                            number="{
+                                    parts:[{path:'productDetailModel>/perDose'},{path:'productDetailModel>/currency_code'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" />
+                        <Label text="awp" />
+                        <ObjectNumber
+                            inverted="true"
+                            number="{
+                                    parts:[{path:'productDetailModel>/awp'},{path:'productDetailModel>/currency_code'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" />
+                        <Label text="Rebate" />
+                        <ObjectNumber
+                            inverted="true"
+                            number="{
+                                    parts:[{path:'productDetailModel>/rebate'},{path:'productDetailModel>/currency_code'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" />
+                    </f:content>
+                </f:SimpleForm>
+            </HBox>
+            <l:HorizontalLayout class="sapUiContentPadding" >
+                <Label text="Retail price" />
+                <ObjectNumber
+                            inverted="true"
+                            number="{
+                                    parts:[{path:'productDetailModel>/retailPrice'},{path:'productDetailModel>/currency_code'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" />
+                <Label text="Acquire cost" />
+                <ObjectNumber
+                            inverted="true"
+                            number="{
+                                    parts:[{path:'productDetailModel>/acqCost'},{path:'productDetailModel>/currency_code'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: true}
+                                }" 
+                            state="Information"/>
+                
+	        </l:HorizontalLayout>
+            <l:HorizontalLayout class="sapUiContentPadding" >
+                <Input
+                    name="inputNumber"
+                    type="Number"
+                    value="1"/>
+                <Button text="Add" design="Emphasized" press=".onAddToCart"></Button>
+                <Input
+                    class="hiden-field"
+                    name="productId"
+                    type="Number"
+                    value="{productDetailModel>/ID}"
+                    />
+            </l:HorizontalLayout>
+        </VBox>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

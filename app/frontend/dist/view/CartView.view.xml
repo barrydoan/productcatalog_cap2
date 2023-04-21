@@ -1,0 +1,98 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.core"
+	xmlns="sap.m" 
+	xmlns:tnt="sap.tnt" 
+    xmlns:semantic="sap.f.semantic"
+    xmlns:u="sap.ui.unified"
+	controllerName="frontend.controller.CartView" 
+	displayBlock="true">
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading>
+            <Title text="Cart List" />
+        </semantic:titleHeading>
+
+        <semantic:titleBreadcrumbs>
+			<Breadcrumbs>
+				<Link href="#/" text="Home" />
+                <Link href="#/carts" text="Cart List" />
+			</Breadcrumbs>
+		</semantic:titleBreadcrumbs>
+
+        <!-- Custom Title Icon Content-->
+        <semantic:titleCustomIconActions>
+            <MenuButton icon="sap-icon://cart" text="{baseModel>/cartInfo/cardNo}">
+                <menu>
+                    <Menu>
+                        <MenuItem text="Select cart" icon="sap-icon://cart-approval" press=".onCartClicked"/>
+                        <MenuItem text="Edit" icon="sap-icon://edit" press=".onEditClicked" />
+                        <MenuItem text="Manage" icon="sap-icon://action-settings" press="onManageClicked" />
+                    </Menu>
+                </menu>
+            </MenuButton>
+        </semantic:titleCustomIconActions>
+
+        <semantic:addAction>
+			<semantic:AddAction press=".onCreateClicked" />
+		</semantic:addAction>
+
+        <semantic:content>
+            <Table noDataText="No data" id="table" 
+                items="{      
+                    path: '/Carts',     
+                    sorter: {       
+                        path: 'CardNo'      
+                    }
+                    }"
+                growing="true"
+                growingScrollToLoad="true">
+                
+                <items >
+                    <ColumnListItem type="Active" id="item0" press=".showCartDetail">
+                        <cells> 
+                            <Text  text="{CardNo}" /> 
+                            <Text  text="{ID}" /> 
+                            <u:Currency
+						        value="{total}" 
+                                currency="USD" maxPrecision="2" useSymbol="false"/>
+                            <HBox name="action" justifyContent="End">
+                                <Input
+                                        class="hiden-field"
+                                        name="cartId"
+                                        value="{ID}"
+                                     />
+                                <Button icon="sap-icon://delete" type="Transparent" press=".onDeleteClicked"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <columns>
+                    <Column>
+                        <header>
+                            <Label text="CartNo"/>
+                        </header>
+                    </Column>
+                    <Column>
+                        <header>
+                            <Label text="CartID"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Total"/>
+                        </header>
+                    </Column>
+                    <Column hAlign="End">
+                        <header>
+                            <Label text="Action"/>
+                        </header>
+                    </Column>
+                </columns>
+            </Table>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

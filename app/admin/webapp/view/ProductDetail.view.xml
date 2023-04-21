@@ -1,0 +1,22 @@
+<mvc:View
+	height="100%"
+	controllerName="admin.controller.ProductDetail"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<Page
+		id="page"
+		showHeader="true" >
+		<customHeader>
+			<Bar>
+				<contentLeft>
+                     <Button id="buttonMenu" icon="sap-icon://menu" tooltip="Menu" press="onMenuPress"  />
+                </contentLeft>
+				<contentRight>
+					<Button id="edit" text="Edit" press="handleEditPress" />
+					<Button id="save" text="Save" type="Emphasized" visible="false" press="handleSavePress" />
+					<Button id="cancel" text="Cancel" visible="false" press="handleCancelPress" />
+				</contentRight>
+			</Bar>
+		</customHeader>
+	</Page>
+</mvc:View>

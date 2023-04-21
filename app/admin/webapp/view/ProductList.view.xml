@@ -1,0 +1,75 @@
+<mvc:View
+	controllerName="admin.controller.ProductList"
+	xmlns="sap.ui.table"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified"
+	xmlns:c="sap.ui.core"
+	xmlns:m="sap.m"
+	height="100%">
+	<m:Page
+		showHeader="true"
+		enableScrolling="false"
+		showNavButton="false"
+		class="sapUiContentPadding">
+		<m:customHeader>
+           <m:Bar>
+                <m:contentLeft>
+                     <m:Button id="buttonMenu" icon="sap-icon://menu" tooltip="Menu" press="onMenuPress"  />
+                </m:contentLeft>
+           </m:Bar>
+      	</m:customHeader>
+		<m:content>
+			<Table
+				id="table"
+				rows="{/Products}"
+				selectionMode="MultiToggle"
+				visibleRowCountMode="Auto"
+				ariaLabelledBy="title">
+				<extension>
+					<m:OverflowToolbar style="Clear">
+						<m:Title id="title" text="Products"/>
+						<m:ToolbarSpacer/>
+						<m:Select id="select" items="{modes>/items}" selectedKey="Navigation" change="onBehaviourModeChange">
+							<c:Item key="{modes>key}" text="{modes>text}"/>
+						</m:Select>
+						<m:ToggleButton text="Toggle Navigated Indicators" pressed="false" press="onNavIndicatorsToggle"/>
+					</m:OverflowToolbar>
+				</extension>
+				<columns>
+					<Column>
+						<m:Label text="Product Name" />
+						<template>
+							<m:Text text="{name}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Category" />
+						<template>
+							<m:Text text="{category/name}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Stock" />
+						<template>
+							<m:Text text="{stock}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Retail price" />
+						<template>
+							<m:Text text="{retailPrice}" wrapping="false"/>
+						</template>
+					</Column>
+                    <Column>
+						<m:Label text="Acquire cost" />
+						<template>
+							<m:Text text="{acqCost}" wrapping="false"/>
+						</template>
+					</Column>
+				</columns>
+			</Table>
+		</m:content>
+	</m:Page>
+</mvc:View>
+
+

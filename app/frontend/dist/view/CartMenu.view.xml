@@ -1,0 +1,18 @@
+<mvc:View
+    controllerName="frontend.controller.CartView" 
+    xmlns="sap.m"
+    xmlns:semantic="sap.f.semantic"
+    xmlns:core="sap.ui.core"
+	xmlns:tnt="sap.tnt" 
+    xmlns:mvc="sap.ui.core.mvc">
+    
+            <MenuButton icon="sap-icon://cart" text="{baseModel>/cartInfo/cardNo}">
+                <menu>
+                    <Menu>
+                        <MenuItem text="Select cart" icon="sap-icon://cart-approval" press=".onCartClicked"/>
+                        <MenuItem text="Edit" icon="sap-icon://edit" press=".onEditClicked" />
+                        <MenuItem text="Manage" icon="sap-icon://action-settings" press="onManageClicked" />
+                    </Menu>
+                </menu>
+            </MenuButton>
+</mvc:View>
